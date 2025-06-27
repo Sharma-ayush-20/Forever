@@ -13,7 +13,8 @@ export const ShopContextProvider = (props) => {
     const [search, setSearch] = useState("") //search function
     const [showSearch, setShowSearch] = useState(false) //search function
     const [cartItems, setCartItems] = useState({}); //cart info
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]); // products data
+    const [token, setToken] = useState('') //token
     const navigate = useNavigate()
 
     const addToCart = async (itemId, size) => {
@@ -101,6 +102,13 @@ export const ShopContextProvider = (props) => {
         getProductsData();
     }, [])
 
+    useEffect(() => {
+        //agar token nhi hai but woh localstorage me available hai toh token set kardo 
+        if(!token && localStorage.getItem('token')){ 
+            setToken(localStorage.getItem('token'))
+        }
+    }, [])
+
     const value = {
         products,
         currency,
@@ -113,6 +121,7 @@ export const ShopContextProvider = (props) => {
         getCartAmount,
         navigate,
         backendUrl,
+        token,setToken,
     }
 
     return (
