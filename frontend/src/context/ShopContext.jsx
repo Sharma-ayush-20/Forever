@@ -39,6 +39,21 @@ export const ShopContextProvider = (props) => {
             cartData[itemId][size] = 1;
         }
         setCartItems(cartData)
+
+        if(token){
+            try {
+                
+                await axios.post(backendUrl + `/api/cart/add`, {itemId, size}, {
+                    headers: {
+                        token
+                    }
+                })
+
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message)
+            }
+        }
     }
 
     const getCartCount = () => {
@@ -64,6 +79,19 @@ export const ShopContextProvider = (props) => {
         cartData[itemId][size] = quantity;
 
         setCartItems(cartData);
+
+        if(token){
+            try {
+                await axios.post(backendUrl + `/api/cart/update`, {itemId, size, quantity}, {
+                    headers: {
+                        token,
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message);
+            }
+        }
     }
 
     const getCartAmount = () => {
@@ -98,6 +126,21 @@ export const ShopContextProvider = (props) => {
         }
     }
 
+    const getUserCart = async (token) => {
+        try {
+            
+            const response = await axios.post(backendUrl + `/api/cart/get`, {}, {headers: {token}})
+
+            if(response.data.success){
+                setCartItems(response.data.cartData)
+            }
+
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message);
+        }
+    }
+
     useEffect(() => {
         getProductsData();
     }, [])
@@ -106,6 +149,7 @@ export const ShopContextProvider = (props) => {
         //agar token nhi hai but woh localstorage me available hai toh token set kardo 
         if(!token && localStorage.getItem('token')){ 
             setToken(localStorage.getItem('token'))
+            getUserCart(localStorage.getItem('token'))
         }
     }, [])
 
