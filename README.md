@@ -41,6 +41,67 @@
 - 🧾 Monitor and manage the entire store
 
 ---
-
 ## 📦 Project Structure Overview
 
+Forever/
+├── client/ # React Frontend
+│ ├── pages/
+│ ├── components/
+│ └── utils/
+├── server/ # Express Backend
+│ ├── controllers/
+│ ├── models/
+│ ├── routes/
+│ └── middleware/
+├── .env
+├── README.md
+└── package.json
+
+---
+
+## 🛠️ How to Run Forever Locally
+
+### Step 1: Clone the Repo
+```bash
+git clone https://github.com/your-username/forever.git
+cd forever
+
+Step 2: Install Dependencies
+
+Backend
+cd backend
+npm install
+
+Frontend
+cd frontend
+npm install
+
+Step 3: Add Environment Variables
+
+Create a .env file inside /server:
+
+PORT=5000
+MONGODB_URI=your_mongodb_url
+JWT_SECRET=your_jwt_secret
+RAZORPAY_KEY_ID=your_key
+RAZORPAY_KEY_SECRET=your_secret
+STRIPE_SECRET_KEY=your_stripe_secret
+
+Step 4: Start the Project
+
+Backend
+
+cd server
+npm run start
+
+Frontend
+
+cd client
+npm run dev
+
+Deployment
+
+🚀 Frontend and Backend deployed on Vercel
+🌐 Easily accessible via single domain
+
+Made With ❤️ by Ayush Sharma
