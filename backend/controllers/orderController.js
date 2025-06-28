@@ -8,6 +8,14 @@ const placeOrder = async (req, res) => {
         //take details
         const { userId, items, amount, address } = req.body;
 
+         // Basic validation
+        if (!userId || !items?.length || !amount || !address) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields"
+            });
+        }
+
         //detail wrapped
         const orderData = {
             userId, items, amount, address,

@@ -159,7 +159,7 @@ export const ShopContextProvider = (props) => {
         delivery_fee,
         search, setSearch,
         showSearch, setShowSearch,
-        cartItems, addToCart,
+        cartItems, addToCart, setCartItems,
         getCartCount,
         updateQuantity,
         getCartAmount,

@@ -3,10 +3,12 @@ import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function PlaceOrder() {
 
-  const [method, setMethod] = useState('cod');  
+  const [method, setMethod] = useState('cod');
   const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext)
 
   const [formData, setFormData] = useState({
@@ -25,16 +27,60 @@ function PlaceOrder() {
     const name = e.target.name
     const value = e.target.value
 
-    setFormData(data => ({...data, [name]: value}))
+    setFormData(data => ({ ...data, [name]: value }))
   }
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      
+
+      let orderItems = [];
+
+      //items detail extracting from all products
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            const itemInfo = structuredClone(products.find((product) => product._id === items))
+            if (itemInfo) {
+              itemInfo.size = item
+              itemInfo.quantity = cartItems[items][item]
+              orderItems.push(itemInfo)
+            }
+          }
+        }
+      }
+
+      let orderData = {
+        address: formData,
+        items: orderItems,
+        amount: getCartAmount() + delivery_fee
+      }
+
+      switch (method) {
+
+        //api calls for COD
+        case 'cod':
+
+          const response = await axios.post(backendUrl + `/api/order/place`, orderData, {
+            headers: {token}
+          })
+
+          if(response.data.success){
+            setCartItems({})
+            navigate('/orders')
+          }
+          else{
+            toast.error(response.data.message)
+          }
+
+          break;
+
+        default:
+          break;
+      }
 
     } catch (error) {
-      
+
     }
   }
 
