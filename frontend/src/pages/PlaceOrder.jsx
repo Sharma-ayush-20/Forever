@@ -66,6 +66,7 @@ function PlaceOrder() {
           })
 
           if(response.data.success){
+            toast.success(response.data.message)
             setCartItems({})
             navigate('/orders')
           }
@@ -80,7 +81,8 @@ function PlaceOrder() {
       }
 
     } catch (error) {
-
+      console.log(error);
+      toast.error(error.message)
     }
   }
 
